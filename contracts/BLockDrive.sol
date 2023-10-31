@@ -25,8 +25,7 @@ contract BLockDrive {
         // Push the value to the user's storage
         _data[user].push(url);
     }
-
-    // Define a function to allow access to another user
+    // Function to allow a user access
     function allowUser(address user) external {
         // Check that the caller is not the same as the user being granted access
         require(msg.sender != user, "Cannot grant access to yourself");
@@ -48,11 +47,13 @@ contract BLockDrive {
             _priorData[msg.sender][user] = true;
         }
     }
-    function disAllowUser(address user) external {
-        // Check that the caller is not the same as the user being granted access
+
+    // Function to disallow a user's access
+    function disallowUser(address user) external {
+        // Check that the caller is not the same as the user whose access is being revoked
         require(msg.sender != user, "Cannot revoke access to yourself");
 
-        // Set the ownership status of the user to true
+        // Set the ownership status of the user to false
         _ownership[msg.sender][user] = false;
 
         // If the user had access before, update their access status
@@ -64,11 +65,10 @@ contract BLockDrive {
                 }
             }
         } else {
-            // If the user did not have access before, add them to the access control list
-            _authorizedList[msg.sender].push(Access(user, true));
-            _priorData[msg.sender][user] = true;
+            revert("Prior, User don't have access");
         }
     }
+
 
     // Define a function to remove access from all users
     function disallowAll() external {
