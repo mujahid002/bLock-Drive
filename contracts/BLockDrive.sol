@@ -17,7 +17,7 @@ contract BLockDrive {
     mapping(address => mapping(address => bool)) private _priorData; // Stores prior access control information
 
     // Define a function to add a new value to the user's storage
-    function add(address user, string memory url) external {
+    function add(address user, string calldata url) external {
         // Check if the URL is not empty and its length is not greater than 256 bytes
         require(bytes(url).length <= 256, "URL is too long");
         require(bytes(url).length > 0, "URL cannot be empty");
